@@ -2,11 +2,7 @@
 using namespace std;
 
 
-
-	int* tablica;
-	int rozmiar, pojemnoœæ;
-
-	Tablica_dynamiczna::Tablica_dynamiczna() {
+	Tablica_dynamiczna::Tablica_dynamiczna() : tablica(nullptr), rozmiar(0), pojemnoœæ(0){
 
 	}  // konstruktor
 
@@ -15,13 +11,13 @@ using namespace std;
 	}  // destruktor
 
 
-	void Tablica_dynamiczna::dodawanie(int wartoœæ, int index) {
+	void Tablica_dynamiczna::dodawanie(int wartoœæ, char pkl) {
 	
-	}  // dodawanie nowego elementu
+	}  // dodawanie nowego elementu (char pocz¹tek/koniec/losowo)
 
-	void Tablica_dynamiczna::usuwanie(int index) {
+	void Tablica_dynamiczna::usuwanie(char pkl) {
 	
-	}  // usuwanie elementu 
+	}  // usuwanie elementu (char pocz¹tek/koniec/losowo)
 
 	int Tablica_dynamiczna::szukanie(int wartoœæ) {
 	

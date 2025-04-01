@@ -9,8 +9,8 @@ public:
 	Tablica_dynamiczna();  // konstruktor
 	~Tablica_dynamiczna();  // destruktor
 
-	void dodawanie(int wartoœæ, int index);  // dodawanie nowego elementu
-	void usuwanie(int index);  // usuwanie elementu 
+	void dodawanie(int wartoœæ, char pkl);  // dodawanie nowego elementu (char pocz¹tek/koniec/losowo)
+	void usuwanie(char pkl);  // usuwanie elementu (char pocz¹tek/koniec/losowo)
 	int szukanie(int wartoœæ);  // wyszukiwanie danej wartoœæi
 	void zwiêkszanie(); // podwajanie pojemnoœci tablicy
 };
