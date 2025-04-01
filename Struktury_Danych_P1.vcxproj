@@ -127,7 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Lista_jednokierunkowa.cpp" />
     <ClCompile Include="Struktury_Danych_P1.cpp" />
+    <ClCompile Include="Tablica_dynamiczna.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Lista_jednokierunkowa.h" />
+    <ClInclude Include="Tablica_dynamiczna.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
