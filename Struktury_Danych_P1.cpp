@@ -2,8 +2,6 @@
 //
 #include "Tablica_dynamiczna.h"
 #include "Lista_jednokierunkowa.h"
-#include <iostream>
-using namespace std;
 
 int main()
 {
