@@ -1,11 +1,13 @@
 ﻿// Struktury_Danych_P1.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
 //
-
+#include "Tablica_dynamiczna.h"
+#include "Lista_jednokierunkowa.h"
 #include <iostream>
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    
 }
 
 // Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
