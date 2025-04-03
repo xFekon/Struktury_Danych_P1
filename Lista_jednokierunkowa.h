@@ -1,5 +1,8 @@
 #pragma once
+#ifndef LISTA_JEDNOKIERUNKOWA_H
+#define LISTA_JEDNOKIERUNKOWA_H
 
+#include <vector>
 
 struct Node {
     int wartoœæ;
@@ -10,7 +13,7 @@ struct Node {
 class Lista_jednokierunkowa
 {
 private:
-    Node *head;
+    Node* head;
     Node* tail;
     int rozmiar;
 
@@ -21,9 +24,10 @@ public:
     void dodawanie(int wartoœæ, char pkl);
     void usuwanie(char pkl);
     int szukanie(int wartoœæ);
-    vector<int> szukanie_wszystkich(int wartoœæ);
+    std::vector<int> szukanie_wszystkich(int wartoœæ);
     void wyœwietl();
 };
 
 
 
+#endif

@@ -1,5 +1,5 @@
 #include "Tablica_dynamiczna.h"
-//#include <iostream>
+#include <iostream>
 #include <cstdlib>
 #include <vector>  // dla wyszukiwania wszystkich indeksów
 using namespace std;
@@ -101,4 +101,5 @@ using namespace std;
 			delete[] tablica;
 			tablica = nowa_tablica;
 			pojemnoœæ = nowa_pojemnosc;
+		}
 	} // podwójne zmniejszanie pojemnoœci tablicy przy 25% pojemnoœci
