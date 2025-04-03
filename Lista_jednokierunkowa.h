@@ -1,8 +1,16 @@
 #pragma once
+
+
+struct Node {
+    int wartoœæ;
+    Node* next;
+    Node(int val);
+};
+
 class Lista_jednokierunkowa
 {
 private:
-    Node* head;
+    Node *head;
     Node* tail;
     int rozmiar;
 
@@ -17,9 +25,5 @@ public:
     void wyœwietl();
 };
 
-struct Node {
-    int wartoœæ;
-    Node* next;
-    Node(int val);
-};
+
 

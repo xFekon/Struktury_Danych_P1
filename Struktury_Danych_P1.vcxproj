@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lista_jednokierunkowa.cpp" />
+    <ClCompile Include="Lista_jednokierunkowa2.cpp" />
     <ClCompile Include="Struktury_Danych_P1.cpp" />
     <ClCompile Include="Tablica_dynamiczna.cpp" />
   </ItemGroup>

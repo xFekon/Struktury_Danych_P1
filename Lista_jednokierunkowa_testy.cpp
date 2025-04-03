@@ -1,5 +1,6 @@
 #include "Lista_jednokierunkowa.h"
 #include <iostream>
+#include <vector>
 
 int main() {
 	Lista_jednokierunkowa lista;
