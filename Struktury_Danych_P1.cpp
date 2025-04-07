@@ -1,64 +1,95 @@
 ﻿// Struktury_Danych_P1.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
 //
-#include "Tablica_dynamiczna.h"
-#include "Lista_jednokierunkowa.h"
 #include <iostream>
 #include <vector>
+#include <numeric> // std::accumulate
+#include "Pomiar_czasu.h"
+#include <string>
+#include <chrono>
+#include <fstream>
+#include <sstream>
+
 using namespace std;
+
+
+
+vector<int> wczytaj_zestaw_z_pliku(const string& sciezka, int numer_zestawu) {
+    ifstream plik(sciezka);
+    string linia;
+    int aktualna = 0;
+
+    while (getline(plik, linia)) {
+        if (++aktualna == numer_zestawu) {
+            stringstream ss(linia);
+            vector<int> dane;
+            int liczba;
+            while (ss >> liczba)
+                dane.push_back(liczba);
+            return dane;
+        }
+    }
+    return {};  // pusty jeśli nie znaleziono
+}
 
 int main()
 {
-	Lista_jednokierunkowa lista;
+    vector<int> rozmiary = { 5000, 8000, 10000, 16000, 20000, 40000, 60000, 100000 };
+    string wynik_csv = "wyniki.csv";
 
-	cout << "Dodawanie elementów do listy...\n";
-	lista.dodawanie(5, 'p');
-	lista.dodawanie(10, 'p');
-	lista.dodawanie(20, 'k');
-	lista.dodawanie(15, 'l');
-	lista.dodawanie(25, 'k');
-	lista.dodawanie(30, 'p');
-	lista.dodawanie(12, 'l');
-	lista.wyświetl();
+    // Nagłówek pliku CSV
+    ofstream wynik_file(wynik_csv);
+    wynik_file << "Rozmiar,ŚredniCzas(us)\n";
+    wynik_file.close();
 
-	cout << "\nUsuwanie pierwszego elementu...\n";
-	lista.usuwanie('p');
-	lista.wyświetl();
+    char tryb_operacji = 'p';  // 'p', 'k', 'l' — ustawiasz ręcznie
+    string operacja = "Dodawanie";  // np. Dodawanie, Usuwanie, Szukanie
 
-	cout << "\nUsuwanie ostatniego elementu...\n";
-	lista.usuwanie('k');
-	lista.wyświetl();
+    for (int rozmiar : rozmiary) {
+        vector<long long> wszystkie_pomiary;
 
-	cout << "\nUsuwanie losowego elementu...\n";
-	lista.usuwanie('l');
-	lista.wyświetl();
+        string plik_nazwa = "dane/dane_" + to_string(rozmiar) + ".txt";
 
-	cout << "\nWyszukiwanie elementów w liście...\n";
-	int szukane[] = { 15, 25, 100 };
-	for (int val : szukane) {
-		int indeks = lista.szukanie(val);
-		if (indeks != -1)
-			cout << "Element " << val << " znaleziono na indeksie: " << indeks << endl;
-		else
-			cout << "Element " << val << " nie istnieje w liście." << endl;
-	}
+        for (int zestaw = 1; zestaw <= 10; ++zestaw) {
+            // Wczytaj dane z pliku
+            
+            vector<int> dane = wczytaj_zestaw_z_pliku(plik_nazwa, zestaw);
 
-	cout << "\nDodawanie i wyszukiwanie duplikatów...\n";
-	lista.dodawanie(15, 'p');
-	lista.dodawanie(15, 'k');
-	lista.dodawanie(15, 'l');
-	lista.wyświetl();
+            for (int i = 0; i < 100; ++i) {
+                // Skopiuj dane do nowego kontenera — bez modyfikowania oryginału
+                vector<int> dane_kopia = dane;
 
-	vector<int> indeksy = lista.szukanie_wszystkich(15);
-	if (!indeksy.empty()) {
-		cout << "Element 15 znaleziono na indeksach: ";
-		for (int ind : indeksy) cout << ind << " ";
-		cout << endl;
-	}
-	else {
-		cout << "Element 15 nie istnieje w liście." << std::endl;
-	}
+                auto start = chrono::high_resolution_clock::now();
 
-	return 0;
+                // Wstaw operację testową — tylko jedną na raz:
+                // -----------------------------------------------
+                //Lista_jednokierunkowa struktura;
+                Tablica_dynamiczna struktura;  // lub Lista_jednokierunkowa struktura;
+
+                for (int wartosc : dane_kopia) {
+                    //struktura.dodawanie(wartosc, tryb_operacji);
+                    struktura.szukanie(791182);
+                }
+                // -----------------------------------------------
+
+                auto end = chrono::high_resolution_clock::now();
+                long long czas = chrono::duration_cast<chrono::microseconds>(end - start).count();
+                wszystkie_pomiary.push_back(czas);
+            }
+        }
+
+        // Oblicz średni czas dla danego rozmiaru
+        long long suma = accumulate(wszystkie_pomiary.begin(), wszystkie_pomiary.end(), 0LL);
+        double srednia = static_cast<double>(suma) / wszystkie_pomiary.size();
+
+        // Zapisz do CSV
+        ofstream wynik_file(wynik_csv, ios::app);
+        wynik_file << rozmiar << "," << static_cast<long long>(srednia) << "\n";
+        wynik_file.close();
+
+        cout << "Zakonczono pomiar dla rozmiaru " << rozmiar << ": Średni czas = " << srednia << " µs" << endl;
+    }
+
+    return 0;
 }
 
 // Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
