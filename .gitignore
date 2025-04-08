@@ -363,3 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 /generator_danych.h
 /generator_danych.cpp
+/wyniki_l_dodawanie_k.csv
+/wyniki_l_dodawanie_l.csv
+*.csv
+/wyniki.csv
