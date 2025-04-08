@@ -4,6 +4,7 @@
 #include <vector>
 #include "Lista_jednokierunkowa.h"
 #include "Tablica_dynamiczna.h"
+#include "Lista_dwukierunkowa.h"
 #include <string>
 #include <chrono>
 #include <fstream>
@@ -30,11 +31,14 @@ vector<vector<int>> wczytaj_dane(const string& nazwa_pliku, int rozmiar) {
 }
 //lista.dodawanie(125466, 'l');  // lub 'p' dla początku, 'l' dla losowo
 /*
-
+random_device rd;
+                mt19937 gen(rd());
+                uniform_int_distribution<> distrib(0, 1000000);
+                int losowa_liczba = distrib(gen);
 */
 void test() {
     vector<int> rozmiary = { 5000, 8000, 10000, 16000, 20000, 40000, 60000, 100000 };
-    string operacja = "t_szukanie_l"; // zmień dla różnych testów
+    string operacja = "l2_usuwanie_l"; // zmień dla różnych testów
 
     ofstream csv("wyniki_" + operacja + ".csv");
     csv << "rozmiar,czas_usredniony_ns\n";
@@ -47,18 +51,15 @@ void test() {
 
         for (const auto& zbior : zbiory) {
             for (int i = 0; i < 100; ++i) {
-                Tablica_dynamiczna tablica;
+                Lista_dwukierunkowa lista_2k;
                 for (int liczba : zbior) {
-                    tablica.dodawanie(liczba, 'k');
+                    lista_2k.dodawanie(liczba, 'k');
                 }
 
-                random_device rd;
-                mt19937 gen(rd());
-                uniform_int_distribution<> distrib(0, 1000000);
-                int losowa_liczba = distrib(gen);
+                
                 // Testowana operacja (dodanie jednego elementu na koniec)
                 auto start = chrono::high_resolution_clock::now();
-                tablica.szukanie(losowa_liczba);
+                lista_2k.usuwanie('l');
                 auto end = chrono::high_resolution_clock::now();
 
                 auto czas = duration_cast<chrono::nanoseconds>(end - start).count();
@@ -223,6 +224,80 @@ void menu_lista() {
     }
 }
 
+void menu_lista_dwukierunkowa() {
+    Lista_dwukierunkowa lista_2k;
+
+    while (true) {
+        int opcja;
+        cout << "\nMenu Lista Dwukierunkowa\n";
+        cout << "1. Zbuduj z pliku\n";
+        cout << "2. Usuń element\n";
+        cout << "3. Dodaj element\n";
+        cout << "4. Znajdź element\n";
+        cout << "5. Utwórz losowo\n";
+        cout << "6. Wyświetl\n";
+        cout << "7. Wróć do głównego menu\n";
+        cout << "Wybierz opcję: ";
+        cin >> opcja;
+
+        switch (opcja) {
+        case 1: {
+            lista_2k.wyczysc();
+            string nazwa_pliku;
+            cout << "Podaj nazwę pliku: ";
+            cin >> nazwa_pliku;
+            lista_2k.wczytaj_z_pliku(nazwa_pliku);
+            break;
+        }
+        case 2: {
+            char tryb;
+            cout << "Podaj gdzie usunąć (p - początek, k - koniec, l - losowo): ";
+            cin >> tryb;
+            lista_2k.usuwanie(tryb);
+            break;
+        }
+        case 3: {
+            int wartosc;
+            char tryb;
+            cout << "Podaj wartość do dodania: ";
+            cin >> wartosc;
+            cout << "Podaj gdzie dodać (p - początek, k - koniec, l - losowo): ";
+            cin >> tryb;
+            lista_2k.dodawanie(wartosc, tryb);
+            break;
+        }
+        case 4: {
+            int wartosc;
+            cout << "Podaj wartość do znalezienia: ";
+            cin >> wartosc;
+            int wynik = lista_2k.szukanie(wartosc);
+            if (wynik != -1) {
+                cout << "Znaleziono element na pozycji " << wynik << endl;
+            }
+            else {
+                cout << "Element nie został znaleziony." << endl;
+            }
+            break;
+        }
+        case 5: {
+            int rozmiar;
+            cout << "Podaj rozmiar do wygenerowania: ";
+            cin >> rozmiar;
+            lista_2k.utwórz_losowo(rozmiar);
+            break;
+        }
+        case 6: {
+            lista_2k.wyświetl();
+            break;
+        }
+        case 7:
+            return;
+        default:
+            cout << "Niepoprawna opcja. Spróbuj ponownie." << endl;
+        }
+    }
+}
+
 int main()
 {
     while (true) {
@@ -242,6 +317,7 @@ int main()
             cout << "Wybierz strukturę:\n";
             cout << "1. Tablica Dynamiczna\n";
             cout << "2. Lista Jednokierunkowa\n";
+            cout << "3. Lista Dwukierunkowa\n";
             cout << "Wybierz opcję: ";
             cin >> struktura;
 
@@ -250,6 +326,9 @@ int main()
             }
             else if (struktura == 2) {
                 menu_lista();  // Menu dla listy
+            }
+            else if (struktura == 3) {
+                menu_lista_dwukierunkowa();
             }
             else {
                 cout << "Niepoprawny wybór.\n";
