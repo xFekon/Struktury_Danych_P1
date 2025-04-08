@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>  // dla wyszukiwania wszystkich indeksów
+#include <fstream>
+
 using namespace std;
 
 
@@ -103,3 +105,46 @@ using namespace std;
 			pojemnoœæ = nowa_pojemnosc;
 		}
 	} // podwójne zmniejszanie pojemnoœci tablicy przy 25% pojemnoœci
+
+
+	void Tablica_dynamiczna::wczytaj_z_pliku(const std::string& nazwa_pliku) {
+		ifstream plik(nazwa_pliku);
+		if (plik.is_open()) {
+			int liczba;
+			while (plik >> liczba) {
+				this->dodawanie(liczba,'k');
+			}
+		}
+		else {
+			cout << "Nie uda³o siê otworzyæ pliku!" << endl;
+		}
+	}
+
+	void Tablica_dynamiczna::utwórz_losowo(int rozmiar) {
+		// Zak³adamy, ¿e mamy rozmiar do wype³nienia
+		for (int i = 0; i < rozmiar; ++i) {
+			// Generowanie losowej liczby ca³kowitej w przedziale od 0 do 100
+			int losowa_liczba = rand() % 101;  // Zmienna w zakresie [0, 100]
+			dodawanie(losowa_liczba, 'k');  // Dodawanie liczby do tablicy
+		}
+	}
+
+	void Tablica_dynamiczna::wyczysc() {
+		delete[] tablica;
+		tablica = new int[1];
+		rozmiar = 0;
+		pojemnoœæ = 1;
+	}
+
+	void Tablica_dynamiczna::wyswietl() const {
+		if (rozmiar == 0) {
+			std::cout << "Tablica jest pusta." << std::endl;
+			return;
+		}
+
+		std::cout << "Zawartoœæ tablicy: ";
+		for (int i = 0; i < rozmiar; ++i) {
+			std::cout << tablica[i] << " ";
+		}
+		std::cout << std::endl;
+	}

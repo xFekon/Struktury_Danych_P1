@@ -21,9 +21,6 @@
     <ClCompile Include="Lista_jednokierunkowa2.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="Pomiar_czasu.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
     <ClCompile Include="Struktury_Danych_P1.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
@@ -35,8 +32,15 @@
     <ClInclude Include="Lista_jednokierunkowa.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Pomiar_czasu.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="dane\dane_5000.txt" />
+    <Text Include="dane\dane_8000.txt" />
+    <Text Include="dane\dane_10000.txt" />
+    <Text Include="dane\dane_16000.txt" />
+    <Text Include="dane\dane_20000.txt" />
+    <Text Include="dane\dane_40000.txt" />
+    <Text Include="dane\dane_60000.txt" />
+    <Text Include="dane\dane_100000.txt" />
   </ItemGroup>
 </Project>

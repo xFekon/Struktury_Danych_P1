@@ -129,14 +129,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lista_jednokierunkowa2.cpp" />
-    <ClCompile Include="Pomiar_czasu.cpp" />
     <ClCompile Include="Struktury_Danych_P1.cpp" />
     <ClCompile Include="Tablica_dynamiczna.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lista_jednokierunkowa.h" />
-    <ClInclude Include="Pomiar_czasu.h" />
     <ClInclude Include="Tablica_dynamiczna.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="dane\dane_10000.txt" />
+    <Text Include="dane\dane_100000.txt" />
+    <Text Include="dane\dane_16000.txt" />
+    <Text Include="dane\dane_20000.txt" />
+    <Text Include="dane\dane_40000.txt" />
+    <Text Include="dane\dane_5000.txt" />
+    <Text Include="dane\dane_60000.txt" />
+    <Text Include="dane\dane_8000.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

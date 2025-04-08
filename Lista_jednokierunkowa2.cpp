@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include <fstream>
 
 using namespace std;
 
@@ -9,11 +10,20 @@ Node::Node(int val) : wartoœæ(val), next(nullptr) {}
 
 Lista_jednokierunkowa::Lista_jednokierunkowa() : head(nullptr), tail(nullptr), rozmiar(0) {}
 
+/*
+Lista_jednokierunkowa::Lista_jednokierunkowa(const Lista_jednokierunkowa& inna) : head(nullptr), tail(nullptr), rozmiar(0) {
+    Node* temp = inna.head;
+    while (temp) {
+        this->dodawanie(temp->wartoœæ, 'k');  // dodawanie na koniec
+        temp = temp->next;
+    }
+}
+*/
+
 Lista_jednokierunkowa::~Lista_jednokierunkowa() {
-    Node* current = head;
-    while (current) {
-        Node* temp = current;
-        current = current->next;
+    while (head) {
+        Node* temp = head;
+        head = head->next;
         delete temp;
     }
 }
@@ -43,6 +53,7 @@ void Lista_jednokierunkowa::dodawanie(int wartoœæ, char pkl) {
         }
         nowy->next = temp->next;
         temp->next = nowy;
+        if (nowy->next == nullptr) tail = nowy;  // poprawka: aktualizuj tail jeœli wstawiamy na koniec
     }
     rozmiar++;
 }
@@ -112,7 +123,7 @@ vector<int> Lista_jednokierunkowa::szukanie_wszystkich(int wartoœæ) {
     return indeksy;
 }
 
-void Lista_jednokierunkowa::wyœwietl() {
+void Lista_jednokierunkowa::wyœwietl() const{
 	if (!head) {
 		cout << "Lista jest pusta." << endl;
 		return;
@@ -123,4 +134,35 @@ void Lista_jednokierunkowa::wyœwietl() {
         temp = temp->next;
     }
     cout << "NULL\n";
+}
+
+void Lista_jednokierunkowa::wczytaj_z_pliku(const std::string& nazwa_pliku) {
+    ifstream plik(nazwa_pliku);
+    if (plik.is_open()) {
+        int liczba;
+        while (plik >> liczba) {
+            this->dodawanie(liczba, 'k'); // Dodawanie na koniec
+        }
+    }
+    else {
+        cout << "Nie uda³o siê otworzyæ pliku!" << endl;
+    }
+}
+
+void Lista_jednokierunkowa::utwórz_losowo(int rozmiar) {
+    for (int i = 0; i < rozmiar; ++i) {
+        // Generowanie losowej liczby ca³kowitej w przedziale od 0 do 100
+        int losowa_liczba = rand() % 101;  // Zmienna w zakresie [0, 100]
+        dodawanie(losowa_liczba, 'k');  // Dodawanie liczby na koniec listy
+    }
+}
+
+void Lista_jednokierunkowa::wyczysc() {
+    while (head) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+    tail = nullptr;
+    rozmiar = 0;
 }

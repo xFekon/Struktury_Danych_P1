@@ -1,7 +1,7 @@
 #pragma once
 #ifndef TABLICA_DYNAMINCZNA_H
 #define TABLICA_DYNAMINCZNA_H
-
+#include <string>
 #include <vector>
 class Tablica_dynamiczna
 {
@@ -19,6 +19,10 @@ public:
 	std::vector<int> szukanie_wszystkich(int wartoœæ);  // 
 	void zwiêkszanie(); // podwajanie pojemnoœci tablicy
 	void zmniejszanie(); // podwajanie pojemnoœci tablicy
+	void wczytaj_z_pliku(const std::string& nazwa_pliku);
+	void utwórz_losowo(int rozmiar);
+	void wyczysc();
+	void wyswietl() const;
 };
 
 #endif

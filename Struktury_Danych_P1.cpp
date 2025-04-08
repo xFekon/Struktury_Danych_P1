@@ -2,91 +2,265 @@
 //
 #include <iostream>
 #include <vector>
-#include <numeric> // std::accumulate
-#include "Pomiar_czasu.h"
+#include "Lista_jednokierunkowa.h"
+#include "Tablica_dynamiczna.h"
 #include <string>
 #include <chrono>
 #include <fstream>
 #include <sstream>
+#include <random>
 
 using namespace std;
 
 
 
-vector<int> wczytaj_zestaw_z_pliku(const string& sciezka, int numer_zestawu) {
-    ifstream plik(sciezka);
-    string linia;
-    int aktualna = 0;
-
-    while (getline(plik, linia)) {
-        if (++aktualna == numer_zestawu) {
-            stringstream ss(linia);
-            vector<int> dane;
+vector<vector<int>> wczytaj_dane(const string& nazwa_pliku, int rozmiar) {
+    ifstream plik(nazwa_pliku);
+    vector<vector<int>> zbiory;
+    for (int i = 0; i < 10; ++i) {
+        vector<int> zbior;
+        for (int j = 0; j < rozmiar; ++j) {
             int liczba;
-            while (ss >> liczba)
-                dane.push_back(liczba);
-            return dane;
+            plik >> liczba;
+            zbior.push_back(liczba);
+        }
+        zbiory.push_back(zbior);
+    }
+    return zbiory;
+}
+//lista.dodawanie(125466, 'l');  // lub 'p' dla początku, 'l' dla losowo
+/*
+
+*/
+void test() {
+    vector<int> rozmiary = { 5000, 8000, 10000, 16000, 20000, 40000, 60000, 100000 };
+    string operacja = "t_szukanie_l"; // zmień dla różnych testów
+
+    ofstream csv("wyniki_" + operacja + ".csv");
+    csv << "rozmiar,czas_usredniony_ns\n";
+
+    for (int rozmiar : rozmiary) {
+        string plik_danych = "dane_" + to_string(rozmiar) + ".txt";
+        vector<vector<int>> zbiory = wczytaj_dane(plik_danych, rozmiar);
+
+        long long suma_czasu = 0;
+
+        for (const auto& zbior : zbiory) {
+            for (int i = 0; i < 100; ++i) {
+                Tablica_dynamiczna tablica;
+                for (int liczba : zbior) {
+                    tablica.dodawanie(liczba, 'k');
+                }
+
+                random_device rd;
+                mt19937 gen(rd());
+                uniform_int_distribution<> distrib(0, 1000000);
+                int losowa_liczba = distrib(gen);
+                // Testowana operacja (dodanie jednego elementu na koniec)
+                auto start = chrono::high_resolution_clock::now();
+                tablica.szukanie(losowa_liczba);
+                auto end = chrono::high_resolution_clock::now();
+
+                auto czas = duration_cast<chrono::nanoseconds>(end - start).count();
+                suma_czasu += czas;
+            }
+        }
+
+        double sredni_czas = static_cast<double>(suma_czasu) / (zbiory.size() * 100);
+        csv << rozmiar << "," << sredni_czas << "\n";
+        cout << "Zakonczono: " << rozmiar << " - średni czas: " << sredni_czas << " ns\n";
+    }
+
+    csv.close();
+}
+
+void menu_tablica() {
+    Tablica_dynamiczna tablica;
+
+    while (true) {
+        int opcja;
+        cout << "\nMenu Tablica Dynamiczna\n";
+        cout << "1. Zbuduj z pliku\n";
+        cout << "2. Usuń element\n";
+        cout << "3. Dodaj element\n";
+        cout << "4. Znajdź element\n";
+        cout << "5. Utwórz losowo\n";
+        cout << "6. Wyświetl\n";
+        cout << "7. Wróć do głównego menu\n";
+        cout << "Wybierz opcję: ";
+        cin >> opcja;
+
+        switch (opcja) {
+        case 1: {
+            tablica.wyczysc();
+            string nazwa_pliku;
+            cout << "Podaj nazwę pliku: ";
+            cin >> nazwa_pliku;
+            tablica.wczytaj_z_pliku(nazwa_pliku);
+            break;
+        }
+        case 2: {
+            char tryb;
+            cout << "Podaj gdzie usunąć: ";
+            cin >> tryb;
+            tablica.usuwanie(tryb); // Zakładając, że masz odpowiednią metodę usuwania
+            break;
+        }
+        case 3: {
+            int wartosc;
+            char tryb;
+            cout << "Podaj wartość do dodania: ";
+            cin >> wartosc;
+            cout << "Podaj gdzie dodac(p, k, l): ";
+            cin >> tryb;
+            tablica.dodawanie(wartosc, tryb);
+            break;
+        }
+        case 4: {
+            int wartosc;
+            cout << "Podaj wartość do znalezienia: ";
+            cin >> wartosc;
+            int wynik = tablica.szukanie(wartosc);
+            if (wynik != -1) {
+                cout << "Znaleziono element na pozycji " << wynik << endl;
+            }
+            else {
+                cout << "Element nie został znaleziony." << endl;
+            }
+            break;
+        }
+        case 5: {
+            int rozmiar;
+            cout << "Podaj rozmiar do wygenerowania: ";
+            cin >> rozmiar;
+            tablica.utwórz_losowo(rozmiar);
+            break;
+        }
+        case 6: {
+            tablica.wyswietl();
+            break;
+        }
+        case 7:
+            return;
+        default:
+            cout << "Niepoprawna opcja. Spróbuj ponownie." << endl;
         }
     }
-    return {};  // pusty jeśli nie znaleziono
+}
+
+void menu_lista() {
+    Lista_jednokierunkowa lista;
+
+    while (true) {
+        int opcja;
+        cout << "\nMenu Lista Jednokierunkowa\n";
+        cout << "1. Zbuduj z pliku\n";
+        cout << "2. Usuń element\n";
+        cout << "3. Dodaj element\n";
+        cout << "4. Znajdź element\n";
+        cout << "5. Utwórz losowo\n";
+        cout << "6. Wyświetl\n";
+        cout << "7. Wróć do głównego menu\n";
+        cout << "Wybierz opcję: ";
+        cin >> opcja;
+
+        switch (opcja) {
+        case 1: {
+            lista.wyczysc();
+            string nazwa_pliku;
+            cout << "Podaj nazwę pliku: ";
+            cin >> nazwa_pliku;
+            lista.wczytaj_z_pliku(nazwa_pliku);
+            break;
+        }
+        case 2: {
+            char tryb;
+            cout << "Podaj gdzie usunąć: ";
+            cin >> tryb;
+            lista.usuwanie(tryb); // Zakładając, że masz odpowiednią metodę usuwania
+            break;
+        }
+        case 3: {
+            int wartosc;
+            char tryb;
+            cout << "Podaj wartosc do dodania: ";
+            cin >> wartosc;
+            cout << "Podaj gdzie dodac(p, k, l): ";
+            cin >> tryb;
+            lista.dodawanie(wartosc, tryb);
+            break;
+        }
+        case 4: {
+            int wartosc;
+            cout << "Podaj wartosc do znalezienia: ";
+            cin >> wartosc;
+            int wynik = lista.szukanie(wartosc);
+            if (wynik != -1) {
+                cout << "Znaleziono element na pozycji " << wynik << endl;
+            }
+            else {
+                cout << "Element nie zostal znaleziony." << endl;
+            }
+            break;
+        }
+        case 5: {
+            int rozmiar;
+            cout << "Podaj rozmiar do wygenerowania: ";
+            cin >> rozmiar;
+                lista.utwórz_losowo(rozmiar);
+            
+            break;
+        }
+        case 6: {
+            lista.wyświetl();
+            break;
+        }
+        case 7:
+            return;
+        default:
+            cout << "Niepoprawna opcja. Sprobuj ponownie." << endl;
+        }
+    }
 }
 
 int main()
 {
-    vector<int> rozmiary = { 5000, 8000, 10000, 16000, 20000, 40000, 60000, 100000 };
-    string wynik_csv = "wyniki.csv";
+    while (true) {
+        int opcja;
+        cout << "Menu Glowne\n";
+        cout << "1. Wykonaj test\n";
+        cout << "2. Testuj funkcjonalnosci\n";
+        cout << "3. Zakoncz program\n";
+        cout << "Wybierz opcje: ";
+        cin >> opcja;
 
-    // Nagłówek pliku CSV
-    ofstream wynik_file(wynik_csv);
-    wynik_file << "Rozmiar,ŚredniCzas(us)\n";
-    wynik_file.close();
+        if (opcja == 1) {
+            test();  // Wykonanie testów
+        }
+        else if (opcja == 2) {
+            int struktura;
+            cout << "Wybierz strukturę:\n";
+            cout << "1. Tablica Dynamiczna\n";
+            cout << "2. Lista Jednokierunkowa\n";
+            cout << "Wybierz opcję: ";
+            cin >> struktura;
 
-    char tryb_operacji = 'p';  // 'p', 'k', 'l' — ustawiasz ręcznie
-    string operacja = "Dodawanie";  // np. Dodawanie, Usuwanie, Szukanie
-
-    for (int rozmiar : rozmiary) {
-        vector<long long> wszystkie_pomiary;
-
-        string plik_nazwa = "dane/dane_" + to_string(rozmiar) + ".txt";
-
-        for (int zestaw = 1; zestaw <= 10; ++zestaw) {
-            // Wczytaj dane z pliku
-            
-            vector<int> dane = wczytaj_zestaw_z_pliku(plik_nazwa, zestaw);
-
-            for (int i = 0; i < 100; ++i) {
-                // Skopiuj dane do nowego kontenera — bez modyfikowania oryginału
-                vector<int> dane_kopia = dane;
-
-                auto start = chrono::high_resolution_clock::now();
-
-                // Wstaw operację testową — tylko jedną na raz:
-                // -----------------------------------------------
-                //Lista_jednokierunkowa struktura;
-                Tablica_dynamiczna struktura;  // lub Lista_jednokierunkowa struktura;
-
-                for (int wartosc : dane_kopia) {
-                    //struktura.dodawanie(wartosc, tryb_operacji);
-                    struktura.szukanie(791182);
-                }
-                // -----------------------------------------------
-
-                auto end = chrono::high_resolution_clock::now();
-                long long czas = chrono::duration_cast<chrono::microseconds>(end - start).count();
-                wszystkie_pomiary.push_back(czas);
+            if (struktura == 1) {
+                menu_tablica();  // Menu dla tablicy
+            }
+            else if (struktura == 2) {
+                menu_lista();  // Menu dla listy
+            }
+            else {
+                cout << "Niepoprawny wybór.\n";
             }
         }
-
-        // Oblicz średni czas dla danego rozmiaru
-        long long suma = accumulate(wszystkie_pomiary.begin(), wszystkie_pomiary.end(), 0LL);
-        double srednia = static_cast<double>(suma) / wszystkie_pomiary.size();
-
-        // Zapisz do CSV
-        ofstream wynik_file(wynik_csv, ios::app);
-        wynik_file << rozmiar << "," << static_cast<long long>(srednia) << "\n";
-        wynik_file.close();
-
-        cout << "Zakonczono pomiar dla rozmiaru " << rozmiar << ": Średni czas = " << srednia << " µs" << endl;
+        else if(opcja == 3){
+            return 0;
+        }
+        else {
+            cout << "Niepoprawna opcja.\n";
+        }
     }
 
     return 0;
