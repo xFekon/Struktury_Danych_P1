@@ -28,7 +28,7 @@ Lista_jednokierunkowa::~Lista_jednokierunkowa() {
     }
 }
 
-void Lista_jednokierunkowa::dodawanie(int wartoœæ, char pkl) {
+void Lista_jednokierunkowa::dodawanie(int wartoœæ, char pkl) { // dodawanie podanej wartoœæi na dane miejsce (p - pocz¹tek, k - koniec, l - losowo)
     Node* nowy = new Node(wartoœæ);
     if (!head) {
         head = tail = nowy;
@@ -53,12 +53,12 @@ void Lista_jednokierunkowa::dodawanie(int wartoœæ, char pkl) {
         }
         nowy->next = temp->next;
         temp->next = nowy;
-        if (nowy->next == nullptr) tail = nowy;  // poprawka: aktualizuj tail jeœli wstawiamy na koniec
+        if (nowy->next == nullptr) tail = nowy;  
     }
     rozmiar++;
 }
 
-void Lista_jednokierunkowa::usuwanie(char pkl) {
+void Lista_jednokierunkowa::usuwanie(char pkl) { // usuwanie z danego miejsca (p - pocz¹tek, k - koniec, l - losowo)
     if (!head) return;
     if (pkl == 'p') {
         Node* temp = head;
@@ -100,7 +100,7 @@ void Lista_jednokierunkowa::usuwanie(char pkl) {
 	if (head) rozmiar--;
 }
 
-int Lista_jednokierunkowa::szukanie(int wartoœæ) {
+int Lista_jednokierunkowa::szukanie(int wartoœæ) { // zwraca idndeks pierwszej zgadzaj¹cej siê znalezionej wartoœci 
     Node* temp = head;
     int indeks = 0;
     while (temp) {
@@ -111,7 +111,7 @@ int Lista_jednokierunkowa::szukanie(int wartoœæ) {
     return -1;
 }
 
-vector<int> Lista_jednokierunkowa::szukanie_wszystkich(int wartoœæ) {
+vector<int> Lista_jednokierunkowa::szukanie_wszystkich(int wartoœæ) { // zwraca indeksy wszystkich pasuj¹cych wartoœci
     vector<int> indeksy;
     Node* temp = head;
     int indeks = 0;
@@ -123,7 +123,7 @@ vector<int> Lista_jednokierunkowa::szukanie_wszystkich(int wartoœæ) {
     return indeksy;
 }
 
-void Lista_jednokierunkowa::wyœwietl() const{
+void Lista_jednokierunkowa::wyœwietl() const{ // wyœwietla wszystkie wêz³y po kolei
 	if (!head) {
 		cout << "Lista jest pusta." << endl;
 		return;
@@ -136,7 +136,7 @@ void Lista_jednokierunkowa::wyœwietl() const{
     cout << "NULL\n";
 }
 
-void Lista_jednokierunkowa::wczytaj_z_pliku(const std::string& nazwa_pliku) {
+void Lista_jednokierunkowa::wczytaj_z_pliku(const std::string& nazwa_pliku) { // tworzy listê z liczb w pliku ("wczytaj_zpf.txt")
     ifstream plik(nazwa_pliku);
     if (plik.is_open()) {
         int liczba;
@@ -149,7 +149,7 @@ void Lista_jednokierunkowa::wczytaj_z_pliku(const std::string& nazwa_pliku) {
     }
 }
 
-void Lista_jednokierunkowa::utwórz_losowo(int rozmiar) {
+void Lista_jednokierunkowa::utwórz_losowo(int rozmiar) { // tworzy dan¹ iloœc wêz³ów losowych wartoœci (u¿ywane z wyczysc())
     for (int i = 0; i < rozmiar; ++i) {
         // Generowanie losowej liczby ca³kowitej w przedziale od 0 do 100
         int losowa_liczba = rand() % 101;  // Zmienna w zakresie [0, 100]
@@ -157,7 +157,7 @@ void Lista_jednokierunkowa::utwórz_losowo(int rozmiar) {
     }
 }
 
-void Lista_jednokierunkowa::wyczysc() {
+void Lista_jednokierunkowa::wyczysc() { // usuwa wszystkie wêz³y
     while (head) {
         Node* temp = head;
         head = head->next;

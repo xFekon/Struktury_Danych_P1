@@ -131,6 +131,7 @@ void menu_tablica() {
             break;
         }
         case 5: {
+            tablica.wyczysc();
             int rozmiar;
             cout << "Podaj rozmiar do wygenerowania: ";
             cin >> rozmiar;
@@ -156,27 +157,27 @@ void menu_lista() {
         int opcja;
         cout << "\nMenu Lista Jednokierunkowa\n";
         cout << "1. Zbuduj z pliku\n";
-        cout << "2. Usuń element\n";
+        cout << "2. Usun element\n";
         cout << "3. Dodaj element\n";
-        cout << "4. Znajdź element\n";
-        cout << "5. Utwórz losowo\n";
-        cout << "6. Wyświetl\n";
-        cout << "7. Wróć do głównego menu\n";
-        cout << "Wybierz opcję: ";
+        cout << "4. Znajdz element\n";
+        cout << "5. Utworz losowo\n";
+        cout << "6. Wyswietl\n";
+        cout << "7. Wroc do glownego menu\n";
+        cout << "Wybierz opcje: ";
         cin >> opcja;
 
         switch (opcja) {
         case 1: {
             lista.wyczysc();
             string nazwa_pliku;
-            cout << "Podaj nazwę pliku: ";
+            cout << "Podaj nazwe pliku: ";
             cin >> nazwa_pliku;
             lista.wczytaj_z_pliku(nazwa_pliku);
             break;
         }
         case 2: {
             char tryb;
-            cout << "Podaj gdzie usunąć: ";
+            cout << "Podaj gdzie usunac: ";
             cin >> tryb;
             lista.usuwanie(tryb); // Zakładając, że masz odpowiednią metodę usuwania
             break;
@@ -205,6 +206,7 @@ void menu_lista() {
             break;
         }
         case 5: {
+            lista.wyczysc();
             int rozmiar;
             cout << "Podaj rozmiar do wygenerowania: ";
             cin >> rozmiar;
@@ -235,23 +237,23 @@ void menu_lista_dwukierunkowa() {
         cout << "3. Dodaj element\n";
         cout << "4. Znajdź element\n";
         cout << "5. Utwórz losowo\n";
-        cout << "6. Wyświetl\n";
-        cout << "7. Wróć do głównego menu\n";
-        cout << "Wybierz opcję: ";
+        cout << "6. Wyswietl\n";
+        cout << "7. Wroc do glownego menu\n";
+        cout << "Wybierz opcje: ";
         cin >> opcja;
 
         switch (opcja) {
         case 1: {
             lista_2k.wyczysc();
             string nazwa_pliku;
-            cout << "Podaj nazwę pliku: ";
+            cout << "Podaj nazwe pliku: ";
             cin >> nazwa_pliku;
             lista_2k.wczytaj_z_pliku(nazwa_pliku);
             break;
         }
         case 2: {
             char tryb;
-            cout << "Podaj gdzie usunąć (p - początek, k - koniec, l - losowo): ";
+            cout << "Podaj gdzie usunac (p - początek, k - koniec, l - losowo): ";
             cin >> tryb;
             lista_2k.usuwanie(tryb);
             break;
@@ -259,16 +261,16 @@ void menu_lista_dwukierunkowa() {
         case 3: {
             int wartosc;
             char tryb;
-            cout << "Podaj wartość do dodania: ";
+            cout << "Podaj wartosc do dodania: ";
             cin >> wartosc;
-            cout << "Podaj gdzie dodać (p - początek, k - koniec, l - losowo): ";
+            cout << "Podaj gdzie dodać (p - poczatek, k - koniec, l - losowo): ";
             cin >> tryb;
             lista_2k.dodawanie(wartosc, tryb);
             break;
         }
         case 4: {
             int wartosc;
-            cout << "Podaj wartość do znalezienia: ";
+            cout << "Podaj wartosc do znalezienia: ";
             cin >> wartosc;
             int wynik = lista_2k.szukanie(wartosc);
             if (wynik != -1) {
@@ -280,6 +282,7 @@ void menu_lista_dwukierunkowa() {
             break;
         }
         case 5: {
+            lista_2k.wyczysc();
             int rozmiar;
             cout << "Podaj rozmiar do wygenerowania: ";
             cin >> rozmiar;
@@ -293,14 +296,14 @@ void menu_lista_dwukierunkowa() {
         case 7:
             return;
         default:
-            cout << "Niepoprawna opcja. Spróbuj ponownie." << endl;
+            cout << "Niepoprawna opcja. Sprobuj ponownie." << endl;
         }
     }
 }
 
 int main()
 {
-    while (true) {
+    while (true) { // Operująca całe Menu, dopóki nie wybierzemy opcji 3
         int opcja;
         cout << "Menu Glowne\n";
         cout << "1. Wykonaj test\n";
@@ -310,28 +313,28 @@ int main()
         cin >> opcja;
 
         if (opcja == 1) {
-            test();  // Wykonanie testów
+            test();  // Wykonanie testu
         }
         else if (opcja == 2) {
             int struktura;
-            cout << "Wybierz strukturę:\n";
+            cout << "Wybierz strukture:\n";
             cout << "1. Tablica Dynamiczna\n";
             cout << "2. Lista Jednokierunkowa\n";
             cout << "3. Lista Dwukierunkowa\n";
-            cout << "Wybierz opcję: ";
+            cout << "Wybierz opcje: ";
             cin >> struktura;
 
             if (struktura == 1) {
                 menu_tablica();  // Menu dla tablicy
             }
             else if (struktura == 2) {
-                menu_lista();  // Menu dla listy
+                menu_lista();  // Menu dla listy jednokierunkowej
             }
             else if (struktura == 3) {
-                menu_lista_dwukierunkowa();
+                menu_lista_dwukierunkowa(); // Menu dla listy dwukierunkowej
             }
             else {
-                cout << "Niepoprawny wybór.\n";
+                cout << "Niepoprawny wybor.\n";
             }
         }
         else if(opcja == 3){

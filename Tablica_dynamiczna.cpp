@@ -63,7 +63,7 @@ using namespace std;
 		zmniejszanie();
 	}  // usuwanie elementu (char pocz¹tek/koniec/losowo)
 
-	int Tablica_dynamiczna::szukanie(int wartoœæ) {
+	int Tablica_dynamiczna::szukanie(int wartoœæ) { // zwraca pierwszy znaleziony indeks z dan¹ wartoœci¹
 		for (int i = 0; i < rozmiar; i++) {
 			if (tablica[i] == wartoœæ) {
 				return i;
@@ -72,7 +72,7 @@ using namespace std;
 		return -1;
 	}  // wyszukiwanie danej wartoœæi
 
-	vector<int> Tablica_dynamiczna::szukanie_wszystkich(int wartoœæ) {
+	vector<int> Tablica_dynamiczna::szukanie_wszystkich(int wartoœæ) { // zwraca indeksy wszystkich pasuj¹cych wartoœci
 		vector<int> indeksy;
 		for (int i = 0; i < rozmiar; i++) {
 			if (tablica[i] == wartoœæ) {
@@ -107,7 +107,7 @@ using namespace std;
 	} // podwójne zmniejszanie pojemnoœci tablicy przy 25% pojemnoœci
 
 
-	void Tablica_dynamiczna::wczytaj_z_pliku(const std::string& nazwa_pliku) {
+	void Tablica_dynamiczna::wczytaj_z_pliku(const std::string& nazwa_pliku) { // u¿ywana w testach funkcjonalnoœci (plik: "wczytaj_zpf.txt")
 		ifstream plik(nazwa_pliku);
 		if (plik.is_open()) {
 			int liczba;
@@ -120,23 +120,23 @@ using namespace std;
 		}
 	}
 
-	void Tablica_dynamiczna::utwórz_losowo(int rozmiar) {
+	void Tablica_dynamiczna::utwórz_losowo(int rozmiar) { // dodaje dan¹ iloœæ losowych wartoœci po kolei(wykorzystywana z wyczysc())
 		// Zak³adamy, ¿e mamy rozmiar do wype³nienia
 		for (int i = 0; i < rozmiar; ++i) {
 			// Generowanie losowej liczby ca³kowitej w przedziale od 0 do 100
-			int losowa_liczba = rand() % 101;  // Zmienna w zakresie [0, 100]
-			dodawanie(losowa_liczba, 'k');  // Dodawanie liczby do tablicy
+			int losowa_liczba = rand() % 101;  
+			dodawanie(losowa_liczba, 'k');  
 		}
 	}
 
-	void Tablica_dynamiczna::wyczysc() {
+	void Tablica_dynamiczna::wyczysc() { // czyœci ca³¹ tablicê
 		delete[] tablica;
 		tablica = new int[1];
 		rozmiar = 0;
 		pojemnoœæ = 1;
 	}
 
-	void Tablica_dynamiczna::wyswietl() const {
+	void Tablica_dynamiczna::wyswietl() const { // wyœwietla ka¿d¹ komórkê tablicy po kolei
 		if (rozmiar == 0) {
 			std::cout << "Tablica jest pusta." << std::endl;
 			return;

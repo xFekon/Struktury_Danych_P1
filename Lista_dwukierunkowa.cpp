@@ -113,7 +113,7 @@ void Lista_dwukierunkowa::usuwanie(char pkl) {
     rozmiar--;
 }
 
-int Lista_dwukierunkowa::szukanie(int wartoœæ) {
+int Lista_dwukierunkowa::szukanie(int wartoœæ) { // koñczy siê po znalezieniu pierwszej zgadzaj¹cejsie wartoœci
     DoubleNode* temp = head;
     int indeks = 0;
     while (temp) {
@@ -124,7 +124,7 @@ int Lista_dwukierunkowa::szukanie(int wartoœæ) {
     return -1;
 }
 
-vector<int> Lista_dwukierunkowa::szukanie_wszystkich(int wartoœæ) {
+vector<int> Lista_dwukierunkowa::szukanie_wszystkich(int wartoœæ) { // zwraca indeksy wszystkich wartoœæi zgadzaj¹cych siê
     vector<int> indeksy;
     DoubleNode* temp = head;
     int indeks = 0;
@@ -136,7 +136,7 @@ vector<int> Lista_dwukierunkowa::szukanie_wszystkich(int wartoœæ) {
     return indeksy;
 }
 
-void Lista_dwukierunkowa::wyœwietl() const {
+void Lista_dwukierunkowa::wyœwietl() const { // wyœwietla ka¿dy node listy
     if (!head) {
         cout << "Lista jest pusta." << endl;
         return;
@@ -149,7 +149,7 @@ void Lista_dwukierunkowa::wyœwietl() const {
     cout << "NULL\n";
 }
 
-void Lista_dwukierunkowa::wczytaj_z_pliku(const std::string& nazwa_pliku) {
+void Lista_dwukierunkowa::wczytaj_z_pliku(const std::string& nazwa_pliku) { // u¿ywana w testach funkcjonalnoœci (plik: "wczytaj_zpf.txt")
     ifstream plik(nazwa_pliku);
     if (plik.is_open()) {
         int liczba;
@@ -162,14 +162,14 @@ void Lista_dwukierunkowa::wczytaj_z_pliku(const std::string& nazwa_pliku) {
     }
 }
 
-void Lista_dwukierunkowa::utwórz_losowo(int rozmiar) {
+void Lista_dwukierunkowa::utwórz_losowo(int rozmiar) {  // dodaje dan¹ iloœæ wêz³ów z losowymi wartoœciami (wykorzystywana z wyczysc())
     for (int i = 0; i < rozmiar; ++i) {
         int losowa_liczba = rand() % 1000001;  // 0 do 1 000 000
         dodawanie(losowa_liczba, 'k');
     }
 }
 
-void Lista_dwukierunkowa::wyczysc() {
+void Lista_dwukierunkowa::wyczysc() { // usuwa wszystkie node'y z listy 
     while (head) {
         DoubleNode* temp = head;
         head = head->next;
